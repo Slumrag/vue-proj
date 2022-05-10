@@ -25,7 +25,7 @@ input,select{
 
 .container{
     /* height: 100%; */
-    max-width: 70%;
+    max-width: 70vw;
     margin: 0 auto;   
 
 }
@@ -59,8 +59,7 @@ input,select{
     padding: 8px;
     background-color:rgba(0, 0, 0, 0.032);
 }
-.navmenu__link{
-}
+
 /* form */
 .date-form{
     max-width: 300px;
@@ -105,4 +104,23 @@ input,select{
 }
 .chart-title{
     margin: 0;
+}
+.chart{
+    position: relative;
+    width: 45vw;
+    /* height: 30vh; */
+}
+@media only screen and (max-width: 600px){
+    .flex-container {
+            row-gap: 20px;
+            flex-direction: column-reverse;
+            
+        }
+        .nav-menu{
+            display: none;
+        }
+    .chart {
+            width: 90vw;
+            /* height: 30vh; */
+        }
 }
