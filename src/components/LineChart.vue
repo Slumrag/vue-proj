@@ -41,14 +41,6 @@ export default {
           },
         },
         plugins: {
-          title: {
-            font: {
-              size: 20,
-            },
-            fullSize: true,
-            display: true,
-            text: "Custom Chart Title",
-          },
           legend: {
             display: false,
           },
@@ -65,7 +57,7 @@ export default {
             },
           },
         },
-        aspectRatio: 1.5,
+        aspectRatio: 1.8,
         responsive: true,
         maintainAspectRatio: true,
       },

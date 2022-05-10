@@ -5,8 +5,13 @@
   <main class="container">
     <section class="flex-container">
       <chart-form @sendData="requestData" />
-      <line-chart v-if="loaded" :chart-data="dataset" />
-      <!-- /.chart-cont -->
+      <div class="chart-container">
+        <h2 v-if="loaded" class="chart-title">{{ chartTitle }}</h2>
+        <!-- /.chart-title -->
+        <line-chart class="chart" v-if="loaded" :chart-data="dataset" />
+        <!-- /.chart-cont -->
+      </div>
+      <!-- /.chart-container -->
       <!-- <bar-chart v-if="loaded" :chart-data="dataset" /> -->
     </section>
   </main>
@@ -64,16 +69,16 @@ export default {
         ],
       };
     },
+    chartTitle() {
+      return `График ${this.chartType}`;
+    },
   },
-  mounted() {
-    // this.labels = [1, 2, 3];
-    // this.downloads = ["l1", "l2", "l3"];
-  },
+  mounted() {},
   methods: {
     getFormData(formData) {
-      console.log("got form data", formData);
-      this.chartType = formData.sensorType;
+      this.chartType = formData.selectedType;
       this.period = formData.period;
+      console.log("got form data", formData, "\ntype", this.chartType);
     },
     resetState() {
       this.loaded = false;

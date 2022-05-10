@@ -1,31 +1,32 @@
 <template>
   <form @submit.prevent action="" class="date-form">
-    <div class="form__item">
+    <!-- <div class="form__item">
       <label class="form__label" for="data-selector">Данные</label>
       <select
-        v-model="sensorType"
+        v-model="selectedType"
         name="data-selector"
         id="data-type"
         class="form__selector"
       >
         <option selected disabled value="">Выберите тип данных</option>
-        <option value="temperature">Температура</option>
+    
+        <option selected value="temperature">Температура</option>
         <option value="visitors">Посетители</option>
         <option value="air-cuality">Качество воздуха</option>
       </select>
-    </div>
+    </div> -->
     <div class="form__item">
       <label class="form__label" for="sensor-selector">Датчик</label>
       <select
-        v-model="sensorId"
+        v-model="selectedSensor"
         name="sensor-selector"
         id="sensor"
         class="form__selector"
       >
         <option selected disabled value="">Выберите датчик</option>
-        <option value="1">sens1</option>
-        <option value="2">sens2</option>
-        <option value="3">sens3</option>
+        <option v-for="(sensor, i) in sensors" :key="i" :value="sensor.id">
+          {{ sensor.name }}
+        </option>
       </select>
     </div>
     <div @change="correctDates" class="date-fields">
@@ -68,41 +69,56 @@
 </template>
 
 <script>
-// const data = require('src/assets/datasets/data1.json');
 export default {
   props: {},
   data() {
     return {
-      sensorType: "",
-      sensorId: "",
+      // selectedType: "temperature",
+      selectedSensor: "",
       dateStart: "",
       dateEnd: "",
       DAY_IN_MS: 86400000,
+      sensors: [],
     };
   },
   methods: {
     sendData() {
       this.$emit("sendData", {
-        sensorId: this.sensorId,
+        selectedSensor: this.selectedSensor,
         // sensorName:
-        sensorType: this.sensorType,
+        selectedType: this.selectedType,
         dateStart: this.dateStart,
         dateEnd: this.dateEnd,
         period: `${this.dateStart}:${this.dateEnd}`,
       });
       console.log(
-        "Тип",
-        this.sensorType,
         "id:",
-        this.sensorId,
+        this.selectedSensor,
         "\nНачало периода",
         this.dateStart,
         "Конец периода",
         this.dateEnd
       );
     },
-    getData() {
-      console.log("data");
+    getSensors() {
+      console.log("got sensors");
+      return [
+        {
+          id: 1,
+          name: "sens1",
+          type: "temp",
+        },
+        {
+          id: 2,
+          name: "sens2",
+          type: "visitors",
+        },
+        {
+          id: 3,
+          name: "sens2",
+          type: "air",
+        },
+      ];
     },
     formatDate(date) {
       return date.toISOString().match(/[\d-]+/)[0];
@@ -133,11 +149,20 @@ export default {
     },
     isEmpty() {
       return !(
-        this.sensorType &&
-        this.sensorId &&
-        this.dateStart &&
-        this.dateEnd
+        // this.selectedType &&
+        (this.selectedSensor && this.dateStart && this.dateEnd)
       );
+    },
+    sensorTypes() {
+      return this.sensors.map((item) => item.type);
+    },
+    selectedType() {
+      return this.sensors.filter(
+        (sensor) => sensor.id === this.selectedSensor
+      )[0].type;
+    },
+    sensorNames() {
+      return this.sensors.map((item) => item.name);
     },
   },
   mounted() {
@@ -149,6 +174,7 @@ export default {
 
     this.dateStart = this.formatDate(weekBefore);
     this.dateEnd = this.formatDate(currDate);
+    this.sensors = this.getSensors();
   },
 };
 </script>
